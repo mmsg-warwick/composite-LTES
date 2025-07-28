@@ -31,7 +31,12 @@
 This repository contains the models for composite latent energy storage (LTES) from the article:
 > E. K. Luckins and F. Brosa Planella, Homogenised models for composite phase change materials, Submitted for publication (2025).
 
-<!-- To reproduce the results from the article, run the examples in the `examples` directory. The notebook `validate_Nallusamy_et_al.ipynb` compares the models with the experimental data from the Nallusamy et al (2007) article, while the script `mesh_refinement.py` runs a convergence study on the model. The figures are saved in the `figures` directory. -->
+To reproduce the results from the article, run the examples in the `scripts` directory:
+- `comsol_model.mph` is the COMSOL model to implement the full model. Requires COMSOL v6.2 to run. Exporting the results defined in the model produces the `cell_data_sharp.csv` and `cell_data_mush.csv` files.
+- `process_COMSOL_data.py` processes the exported data from COMSOL and saves it in the `data` directory in the relevant format.
+- `plot_COMSOL_data.py` plots the processed data from COMSOL against the reduced models in PyBaMM, producing the figures in the article (saved in the `figures` directory).
+- `compute_melting_times.py` runs the reduced models at different values of kappa and computes the melting times. They are saved as csv in the `data` directory.
+- `plot_melting_times.py` plots the melting times against kappa using the data computed by the previous script, producing the figures in the article (saved in the `figures` directory).
 
 ## 🚀 Installing the package
 The package is not yet available on PyPI so it needs to be installed from the source code. These instructions assume that you have a compatible Python version installed (between 3.9 and 3.12).
