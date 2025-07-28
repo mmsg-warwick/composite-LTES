@@ -1,6 +1,6 @@
 # Composite LTES models
 
-[![Tests](https://github.com/mmsg-warwick/encapsulated-LTES/actions/workflows/periodic_tests.yml/badge.svg?branch=main)](https://github.com/mmsg-warwick/encapsulated-LTES/actions/workflows/periodic_tests.yml)
+[![Tests](https://github.com/mmsg-warwick/composite-LTES/actions/workflows/periodic_tests.yml/badge.svg?branch=main)](https://github.com/mmsg-warwick/composite-LTES/actions/workflows/periodic_tests.yml)
 
 <!-- [![Documentation Status][rtd-badge]][rtd-link]
 
