@@ -1,6 +1,7 @@
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 from matplotlib import colormaps
+
 from composite_ltes import root_dir
 
 # Load the data from CSV files
@@ -18,7 +19,9 @@ t_sharp = (1 / 0.855015) ** 2 / 2
 
 # Plot the melting times
 fig, ax = plt.subplots()
-ax.loglog(data_sharp["Kappa"], data_sharp["Melting time"], color=cmap(0), label="Sharp-front")
+ax.loglog(
+    data_sharp["Kappa"], data_sharp["Melting time"], color=cmap(0), label="Sharp-front"
+)
 ax.loglog(data_mush["Kappa"], data_mush["Melting time"], color=cmap(0.8), label="Mush")
 ax.loglog(data_comsol["Kappa"], data_comsol["Melting time"], "xk", label="Microscale")
 ax.loglog(
@@ -37,16 +40,16 @@ ax.loglog(
 
 ax.axvline(x=0.04, color="black", linestyle=":")
 ax.text(
-    0.05, 
-    ax.get_ylim()[0] * 1.2, 
-    r"$\kappa = \theta$", 
-    color="black", 
-    # rotation=90, 
-    va="bottom", 
-    ha="left"
+    0.05,
+    ax.get_ylim()[0] * 1.2,
+    r"$\kappa = \theta$",
+    color="black",
+    # rotation=90,
+    va="bottom",
+    ha="left",
 )
 
-ax.set_xlabel("$\kappa$")
+ax.set_xlabel(r"$\kappa$")
 ax.set_ylabel("Melting time")
 ax.legend()
 fig.tight_layout()

@@ -10,6 +10,7 @@ import scienceplots  # noqa: F401
 def root_dir():
     return Path(__file__).resolve().parents[2]
 
+
 def set_plotting_format(mode="presentation"):
     mpl.style.use(["science", "vibrant"])
 

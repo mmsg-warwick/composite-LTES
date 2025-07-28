@@ -82,7 +82,7 @@ port.exclude_lines = [
 ]
 
 [tool.ruff]
-select = [
+lint.select = [
   "E", "F", "W", # flake8
   "B",           # flake8-bugbear
   "I",           # isort
@@ -108,11 +108,11 @@ select = [
   "PD",          # pandas-vet
 ]
 src = ["src"]
-unfixable = [
+lint.unfixable = [
   "T20",  # Removes print statements
   "F841", # Removes unused variables
 ]
-ignore = [
+lint.ignore = [
   "E741",        # Ambiguous variable name
   "E501",        # Line too long
   "PLR0913",     # Too many arguments
@@ -122,10 +122,11 @@ ignore = [
   "T201",        # allow use of print
   "SIM105",      # Simplify comparison
   "C408",        # Unnecessary dict call
+  "PD002",       # Pandas specific rule for inplace editing
 ]
 line-length = 100
 exclude = ["__init__.py"]
-flake8-unused-arguments.ignore-variadic-names = true
+lint.flake8-unused-arguments.ignore-variadic-names = true
 
 [tool.codespell]
 skip = '*.ipynb,*.ts,./src/3rdParty,./src/Test'

@@ -1,12 +1,13 @@
 #
 # 1D model for composite LTES
-# 
+#
 import pybamm
+
 
 class MushModel(pybamm.models.base_model.BaseModel):
     def __init__(self, name="Mush model"):
         super().__init__(name=name)
-        
+
         ######################
         # Variables
         ######################
@@ -18,8 +19,12 @@ class MushModel(pybamm.models.base_model.BaseModel):
         self.y = pybamm.SpatialVariable(
             "y", domains={"primary": "copper"}, coord_sys="cartesian"
         )
-        T = pybamm.Variable("PCM temperature", domains={"primary": "PCM", "secondary": "copper"})
-        H = pybamm.Variable("PCM enthalpy", domains={"primary": "PCM", "secondary": "copper"})
+        T = pybamm.Variable(
+            "PCM temperature", domains={"primary": "PCM", "secondary": "copper"}
+        )
+        H = pybamm.Variable(
+            "PCM enthalpy", domains={"primary": "PCM", "secondary": "copper"}
+        )
         T_c = pybamm.Variable("Copper temperature", domains={"primary": "copper"})
 
         ######################
@@ -37,7 +42,11 @@ class MushModel(pybamm.models.base_model.BaseModel):
         ######################
         # Equations
         ######################
-        q = self.kappa * pybamm.BoundaryGradient(T, "left") / (self.epsilon * self.delta)
+        q = (
+            self.kappa
+            * pybamm.BoundaryGradient(T, "left")
+            / (self.epsilon * self.delta)
+        )
         dTcdt = (pybamm.div(pybamm.grad(T_c)) + q) / (self.kappa * self.r * self.St)
         dHdt = pybamm.div(pybamm.grad(T))
         self.rhs = {T_c: dTcdt, H: dHdt}
@@ -63,9 +72,14 @@ class MushModel(pybamm.models.base_model.BaseModel):
         ######################
         # Output variables
         ######################
-        phase = (H>= 1/2)
-        ones_xy = pybamm.FullBroadcast(pybamm.Scalar(1), broadcast_domains={"primary": "PCM", "secondary": "copper"})
-        SoC = pybamm.Integral(pybamm.Integral(phase, self.x), self.y) / pybamm.Integral(pybamm.Integral(ones_xy, self.x), self.y)
+        phase = H >= 1 / 2
+        ones_xy = pybamm.FullBroadcast(
+            pybamm.Scalar(1),
+            broadcast_domains={"primary": "PCM", "secondary": "copper"},
+        )
+        SoC = pybamm.Integral(pybamm.Integral(phase, self.x), self.y) / pybamm.Integral(
+            pybamm.Integral(ones_xy, self.x), self.y
+        )
 
         self.variables = {
             "PCM temperature": T,
@@ -82,10 +96,7 @@ class MushModel(pybamm.models.base_model.BaseModel):
         """Convert enthalpy to temperature"""
         solid = H / self.St
         liquid = (H - 1) / self.St
-        return (
-            pybamm.minimum(solid, 0)
-            + pybamm.maximum(liquid, 0)
-        )
+        return pybamm.minimum(solid, 0) + pybamm.maximum(liquid, 0)
 
     def T2H(self, T):
         """Convert temperature to enthalpy"""
@@ -94,7 +105,7 @@ class MushModel(pybamm.models.base_model.BaseModel):
             raise ValueError(msg)
         H_l = self.St * T + 1
         H_s = self.St * T
-        return H_l * (0 < T) + H_s * (0 > T)
+        return H_l * (T > 0) + H_s * (T < 0)
 
     @property
     def default_geometry(self):
@@ -139,21 +150,23 @@ class MushModel(pybamm.models.base_model.BaseModel):
 
     @property
     def default_parameter_values(self):
-        return pybamm.ParameterValues({
-            "Stefan number": 1,
-            "Initial temperature": 0,
-            "Boundary temperature": 1,
-            "theta": 0.04,
-            "epsilon": 0.2,
-            "r": 1,
-            "kappa": 1e-3,
-        })
+        return pybamm.ParameterValues(
+            {
+                "Stefan number": 1,
+                "Initial temperature": 0,
+                "Boundary temperature": 1,
+                "theta": 0.04,
+                "epsilon": 0.2,
+                "r": 1,
+                "kappa": 1e-3,
+            }
+        )
 
 
 class SharpFrontModel(pybamm.models.base_model.BaseModel):
     def __init__(self, name="Sharp-front model"):
         super().__init__(name=name)
-        
+
         ######################
         # Variables
         ######################
@@ -196,9 +209,11 @@ class SharpFrontModel(pybamm.models.base_model.BaseModel):
         ######################
         # Output variables
         ######################
-        phase = (H >= (1 - self.V_C) / 2)
+        phase = H >= (1 - self.V_C) / 2
 
-        ones_y = pybamm.FullBroadcast(pybamm.Scalar(1), broadcast_domains={"primary": "composite"})
+        ones_y = pybamm.FullBroadcast(
+            pybamm.Scalar(1), broadcast_domains={"primary": "composite"}
+        )
         SoC = pybamm.Integral(phase, self.y) / pybamm.Integral(ones_y, self.y)
 
         self.variables = {
@@ -213,13 +228,10 @@ class SharpFrontModel(pybamm.models.base_model.BaseModel):
     def H2T(self, H):
         """Convert enthalpy to temperature"""
         a = self.St * (self.r * self.V_C + (1 - self.V_C))
-        b = (1 - self.V_C)
+        b = 1 - self.V_C
         solid = H / a
         liquid = (H - b) / a
-        return (
-            pybamm.minimum(solid, 0)
-            + pybamm.maximum(liquid, 0)
-        )
+        return pybamm.minimum(solid, 0) + pybamm.maximum(liquid, 0)
 
     def T2H(self, T):
         """Convert temperature to enthalpy"""
@@ -227,16 +239,18 @@ class SharpFrontModel(pybamm.models.base_model.BaseModel):
             msg = "Enthalpy is not uniquely defined at melting temperature"
             raise ValueError(msg)
         a = self.St * (self.r * self.V_C + (1 - self.V_C))
-        b = (1 - self.V_C)
+        b = 1 - self.V_C
         H_l = a * T + b
         H_s = a * T
-        return H_l * (0 < T) + H_s * (0 > T)
-    
+        return H_l * (T > 0) + H_s * (T < 0)
+
     @property
     def default_geometry(self):
         return pybamm.Geometry(
             {
-                "composite": {self.y: {"min": pybamm.Scalar(0), "max": pybamm.Scalar(1)}},
+                "composite": {
+                    self.y: {"min": pybamm.Scalar(0), "max": pybamm.Scalar(1)}
+                },
             }
         )
 
@@ -272,11 +286,13 @@ class SharpFrontModel(pybamm.models.base_model.BaseModel):
 
     @property
     def default_parameter_values(self):
-        return pybamm.ParameterValues({
-            "Stefan number": 1,
-            "Initial temperature": 0,
-            "Boundary temperature": 1,
-            "r": 1,
-            "kappa": 0.1,
-            "Copper volume fraction": 0.2,
-        })
+        return pybamm.ParameterValues(
+            {
+                "Stefan number": 1,
+                "Initial temperature": 0,
+                "Boundary temperature": 1,
+                "r": 1,
+                "kappa": 0.1,
+                "Copper volume fraction": 0.2,
+            }
+        )

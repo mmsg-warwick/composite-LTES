@@ -1,8 +1,8 @@
-import pybamm
 import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
-from composite_ltes import SharpFrontModel, MushModel, root_dir
+import pybamm
+
+from composite_ltes import MushModel, SharpFrontModel, root_dir
 
 # Uncomment the following line to set the logging level to DEBUG
 # pybamm.set_logging_level("DEBUG")
@@ -74,9 +74,7 @@ times_mush = []
 for kappa in kappas_mush:
     print(f"Solving mush model for kappa={kappa:.2e}")
     solution = simulation.solve(
-        [0, 1.5],
-        t_interp=np.linspace(0, 1.5, 100),
-        inputs={"kappa": kappa}
+        [0, 1.5], t_interp=np.linspace(0, 1.5, 100), inputs={"kappa": kappa}
     )
     times_mush.append(solution.t[-1])
     print(solution.solve_time)
