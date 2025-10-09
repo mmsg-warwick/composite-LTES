@@ -2,6 +2,8 @@
 
 [![Tests](https://github.com/mmsg-warwick/composite-LTES/actions/workflows/periodic_tests.yml/badge.svg?branch=main)](https://github.com/mmsg-warwick/composite-LTES/actions/workflows/periodic_tests.yml)
 
+[![DOI](https://zenodo.org/badge/1016766388.svg)](https://doi.org/10.5281/zenodo.17302512)
+
 <!-- [![Documentation Status][rtd-badge]][rtd-link]
 
 [![PyPI version][pypi-version]][pypi-link]
