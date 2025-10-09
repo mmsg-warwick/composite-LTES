@@ -68,7 +68,7 @@ model.events.append(
 simulation = pybamm.Simulation(model, parameter_values=parameter_values)
 
 # Define the range of kappa values for the homogenised model and loop over
-kappas_mush = np.logspace(-5, 0, 50)
+kappas_mush = np.logspace(-5, -0.5, 50)
 times_mush = []
 
 for kappa in kappas_mush:
