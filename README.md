@@ -34,7 +34,7 @@ This repository contains the models for composite latent energy storage (LTES) f
 To reproduce the results from the article, run the examples in the `scripts` directory:
 - `comsol_model.mph` is the COMSOL model to implement the full model. Requires COMSOL v6.2 to run. Exporting the results defined in the model produces the `cell_data_sharp.csv` and `cell_data_mush.csv` files.
 - `process_COMSOL_data.py` processes the exported data from COMSOL and saves it in the `data` directory in the relevant format.
-- `plot_COMSOL_data.py` plots the processed data from COMSOL against the reduced models in PyBaMM, producing the figures in the article (saved in the `figures` directory).
+- `plot_COMSOL_data.py` and `compare_temperature_profiles.py`plots the processed data from COMSOL against the reduced models in PyBaMM, producing the figures in the article (saved in the `figures` directory).
 - `compute_melting_times.py` runs the reduced models at different values of kappa and computes the melting times. They are saved as csv in the `data` directory.
 - `plot_melting_times.py` plots the melting times against kappa using the data computed by the previous script, producing the figures in the article (saved in the `figures` directory).
 
