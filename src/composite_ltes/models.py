@@ -44,8 +44,9 @@ class MushModel(pybamm.models.base_model.BaseModel):
         ######################
         q = (
             self.kappa
+            * 2
             * pybamm.BoundaryGradient(T, "left")
-            / (self.epsilon * self.delta)
+            / (self.theta)
         )
         dTcdt = (pybamm.div(pybamm.grad(T_c)) + q) / (self.kappa * self.r * self.St)
         dHdt = pybamm.div(pybamm.grad(T))

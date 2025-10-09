@@ -16,33 +16,45 @@ cmap = colormaps["plasma"]
 # Calculate theoretical melting times for sharp-front and mush models
 t_mush = (8e-2 / 0.876901) ** 2 / 2
 t_sharp = (1 / 0.855015) ** 2 / 2
+epsilon = 0.2
+theta = 0.04
 
 # Plot the melting times
 fig, ax = plt.subplots()
+coeff = epsilon / theta * t_sharp
+stretch = 1.3
+
 ax.loglog(
-    data_sharp["Kappa"], data_sharp["Melting time"], color=cmap(0), label="Sharp-front"
-)
-ax.loglog(data_mush["Kappa"], data_mush["Melting time"], color=cmap(0.8), label="Mush")
-ax.loglog(data_comsol["Kappa"], data_comsol["Melting time"], "xk", label="Microscale")
-ax.loglog(
-    [1e-2, data_sharp["Kappa"].iloc[-1]],
+    [(t_sharp / coeff) / stretch, data_sharp["Kappa"].iloc[-1]],
     [t_sharp, t_sharp],
     linestyle="--",
     color="grey",
-    label="Theoretical limit",
 )
 ax.loglog(
-    [data_mush["Kappa"].iloc[0], 1e-1],
+    [data_mush["Kappa"].iloc[0], (t_mush / coeff) * stretch],
     [t_mush, t_mush],
     linestyle="--",
     color="grey",
 )
 
-ax.axvline(x=0.04, color="black", linestyle=":")
+ax.loglog(
+    [t_mush / stretch / coeff, t_sharp * stretch / coeff],
+    [t_mush / stretch, t_sharp * stretch],
+    linestyle="--",
+    color="grey",
+)
+
+ax.loglog(
+    data_sharp["Kappa"], data_sharp["Melting time"], color=cmap(0), label="Sharp-front"
+)
+ax.loglog(data_mush["Kappa"], data_mush["Melting time"], color=cmap(0.8), label="Mush")
+ax.loglog(data_comsol["Kappa"], data_comsol["Melting time"], "xk", label="Microscale")
+
+ax.axvline(x=theta / epsilon ** (1/3), color="black", linestyle=":")
 ax.text(
-    0.05,
+    theta / epsilon ** (1/3) * 1.1,
     ax.get_ylim()[0] * 1.2,
-    r"$\kappa = \theta$",
+    r"$\kappa = \theta /  \epsilon^{1/3}$",
     color="black",
     # rotation=90,
     va="bottom",
