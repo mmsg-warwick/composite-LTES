@@ -12,7 +12,7 @@ cmap = colormaps["plasma"]
 fig, ax = plt.subplots()
 
 # Load data from COMSOL
-file = "sharp"
+file = "mush"
 data = pd.read_csv(root_dir() / "data" / f"cell_data_{file}_u.csv")
 times = [float(x) for x in data.columns[2:].to_numpy()]
 t_end = 1.1 * times[-1] # slightly beyond last COMSOL time
@@ -62,8 +62,8 @@ custom_handles = [
     Line2D([0], [0], color="k", linestyle="-", label="Mush"),
     Line2D([0], [0], color="k", linestyle="--", label="Sharp-front"),
     Line2D([0], [0], color="k", marker="x", linestyle="None", markersize=8, label="Microscale"),
-    Line2D([0], [0], color=colors[0], marker="s", linestyle="None", markersize=8, label="@ y=0.5"),
-    Line2D([0], [0], color=colors[1], marker="s", linestyle="None", markersize=8, label="@ y=1.0"),
+    Line2D([0], [0], color=colors[0], marker="s", linestyle="None", markersize=8, label="@ z=0.5"),
+    Line2D([0], [0], color=colors[1], marker="s", linestyle="None", markersize=8, label="@ z=1.0"),
 ]
 
 ax.legend(handles=custom_handles)
