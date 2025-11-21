@@ -31,7 +31,9 @@
 <!-- prettier-ignore-end -->
 
 This repository contains the models for composite latent energy storage (LTES) from the article:
-> E. K. Luckins and F. Brosa Planella, Homogenised models for composite phase change materials, Submitted for publication (2025).
+
+> E.K. Luckins, F. Brosa Planella, [Homogenized models for composite phase-change materials](https://doi.org/10.1098/rspa.2025.0660), Proceedings of the Royal Society A 481 (2025) 20250660.
+
 
 To reproduce the results from the article, run the examples in the `scripts` directory:
 - `comsol_model.mph` is the COMSOL model to implement the full model. Requires COMSOL v6.2 to run. Exporting the results defined in the model produces the `cell_data_sharp.csv` and `cell_data_mush.csv` files.
