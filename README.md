@@ -1,6 +1,6 @@
 # Composite LTES models
 
-[![Tests](https://github.com/mmsg-warwick/composite-LTES/actions/workflows/periodic_tests.yml/badge.svg?branch=main)](https://github.com/mmsg-warwick/composite-LTES/actions/workflows/periodic_tests.yml)
+<!-- [![Tests](https://github.com/mmsg-warwick/composite-LTES/actions/workflows/periodic_tests.yml/badge.svg?branch=main)](https://github.com/mmsg-warwick/composite-LTES/actions/workflows/periodic_tests.yml) -->
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17672777.svg)](https://doi.org/10.5281/zenodo.17672777)
 
